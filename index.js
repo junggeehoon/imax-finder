@@ -67,7 +67,7 @@ const visitHomepage = async () => {
       width: 1280,
       height: 720
     });
-    await page.goto(config.homepage);
+    await page.goto(config.homepage, { timeout: 0 });
     await page.waitFor(1000);
 
     await page.click(`#contents > div.sect-common > div > div.sect-city > ul > li:nth-child(${areaCode[config.region]})`); //지역선택
