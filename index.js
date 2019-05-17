@@ -47,7 +47,7 @@ const sendMail = image => {
 
 const visitHomepage = async () => {
   const browser = await puppeteer.launch({
-    headless: false
+    headless: true
   });
   const page = await browser.newPage();
   page.on('dialog', async dialog => {
@@ -127,6 +127,8 @@ const visitHomepage = async () => {
       const image = Date.now();
       await page.screenshot({path: `./screenshot/${image}.png`, fullPage: true});
       sendMail(image);
+    } else {
+      console.log("wait...");
     }
 
     return browser.close();
