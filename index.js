@@ -60,7 +60,7 @@ const visitHomepage = async () => {
     theater: 'CGV용산아이파크몰',
     year: '2019',
     month: '05',
-    day: '24'
+    day: '27'
   }
   try {
     await page.setViewport({
@@ -107,17 +107,26 @@ const visitHomepage = async () => {
           return document.querySelector(`body > div > div.sect-showtimes > ul > li:nth-child(${i}) > div > div:nth-child(1) > a > strong`).innerText;
         }, i)
         if (movie === config.title) {
-          flag = true;
-          break;
+          const theaterNumber = await page.evaluate(i => {
+            return document.querySelectorAll(`body > div > div.sect-showtimes > ul > li:nth-child(${i}) > div > div.type-hall`).length;
+          }, i)
+          for (let j = 2; j <= theaterNumber + 1; j++) {
+            const theater = await page.evaluate((i, j) => {
+              return document.querySelector(`body > div > div.sect-showtimes > ul > li:nth-child(${i}) > div > div:nth-child(${j}) > div:nth-child(1) > ul > li`).innerText;
+            }, i, j)
+            if (theater === 'IMAX LASER 2D') {
+              flag = true;
+              break;
+            }
+          }
         }
       }
     }
 
     if (flag) {
-      console.log("빨리 예매하세요!!");
       const image = Date.now();
       await page.screenshot({path: `./screenshot/${image}.png`, fullPage: true});
-      // sendMail(image);
+      sendMail(image);
     }
 
     return browser.close();
@@ -126,5 +135,5 @@ const visitHomepage = async () => {
     console.log(err);
   }
 }
-// setInterval(visitHomepage, 60000);
+setInterval(visitHomepage, 600000); // 10분에 한번씩
 visitHomepage();
