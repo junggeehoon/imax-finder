@@ -1,0 +1,25 @@
+{
+  "name": "flights-finder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/junggeehoon/flights-finder.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/junggeehoon/flights-finder/issues"
+  },
+  "homepage": "https://github.com/junggeehoon/flights-finder#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "nodemailer": "^4.6.8",
+    "puppeteer": "^1.10.0"
+  }
+}

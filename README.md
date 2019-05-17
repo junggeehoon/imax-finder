@@ -1,1 +1,1 @@
-# imax-finder
+# flights-finder
