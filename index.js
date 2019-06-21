@@ -47,7 +47,7 @@ const sendMail = image => {
 
 const visitHomepage = async () => {
   const browser = await puppeteer.launch({
-    headless: true
+    headless: false
   });
   const page = await browser.newPage();
   page.on('dialog', async dialog => {
@@ -55,19 +55,19 @@ const visitHomepage = async () => {
   });
   const config = {
     homepage: 'http://www.cgv.co.kr/reserve/show-times/',
-    title: ' 어벤져스: 엔드게임',
+    title: '토이 스토리 4',
     region: '서울',
     theater: 'CGV용산아이파크몰',
     year: '2019',
-    month: '05',
-    day: '27'
+    month: '06',
+    day: '26'
   }
   try {
     await page.setViewport({
       width: 1280,
       height: 720
     });
-    await page.goto(config.homepage, { timeout: 0 });
+    await page.goto(config.homepage);
     await page.waitFor(1000);
 
     await page.click(`#contents > div.sect-common > div > div.sect-city > ul > li:nth-child(${areaCode[config.region]})`); //지역선택
@@ -106,7 +106,7 @@ const visitHomepage = async () => {
         const movie = await page.evaluate(i => {
           return document.querySelector(`body > div > div.sect-showtimes > ul > li:nth-child(${i}) > div > div:nth-child(1) > a > strong`).innerText;
         }, i)
-        if (movie === config.title) {
+        if (movie === ` ${config.title}`) {
           const theaterNumber = await page.evaluate(i => {
             return document.querySelectorAll(`body > div > div.sect-showtimes > ul > li:nth-child(${i}) > div > div.type-hall`).length;
           }, i)
@@ -114,7 +114,7 @@ const visitHomepage = async () => {
             const theater = await page.evaluate((i, j) => {
               return document.querySelector(`body > div > div.sect-showtimes > ul > li:nth-child(${i}) > div > div:nth-child(${j}) > div:nth-child(1) > ul > li`).innerText;
             }, i, j)
-            if (theater === 'IMAX LASER 2D') {
+            if (theater.includes('IMAX')) {
               flag = true;
               break;
             }
@@ -125,10 +125,11 @@ const visitHomepage = async () => {
 
     if (flag) {
       const image = Date.now();
-      await page.screenshot({path: `./screenshot/${image}.png`, fullPage: true});
-      sendMail(image);
+      // await page.screenshot({path: `./screenshot/${image}.png`, fullPage: true});
+      // sendMail(image);
+      console.log('예매하세요!');
     } else {
-      console.log("wait...");
+      console.log("기다리세요!");
     }
 
     return browser.close();
@@ -137,5 +138,5 @@ const visitHomepage = async () => {
     console.log(err);
   }
 }
-setInterval(visitHomepage, 600000); // 10분에 한번씩
+// setInterval(visitHomepage, 600000); // 10분에 한번씩
 visitHomepage();
