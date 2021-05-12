@@ -19,7 +19,7 @@
   "homepage": "https://github.com/junggeehoon/flights-finder#readme",
   "dependencies": {
     "axios": "^0.18.0",
-    "nodemailer": "^4.6.8",
+    "nodemailer": "^6.4.16",
     "puppeteer": "^1.10.0"
   }
 }
